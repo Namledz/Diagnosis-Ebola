@@ -1,0 +1,31 @@
+<link rel="stylesheet" href="/public/css/menu.css">
+<div class="form" id="menu"  style="background-color:#fff;">
+	<!-- Content of form -->
+	<div class="form-content" style="min-height: 550px;">
+		<div class="screen-container fade">
+			<div class="screen screen-menu">
+				<div class="screen-content">
+					<div class="screen-text-header">
+						<h3>Please select diseases you want to diagnose</h3>
+					</div>
+					<form name="screenForm">
+						<label>
+							<input type="radio" name="ebola-diseases" value="ebola-diseases" ng-model="selectedDisease"
+								ng-click="getSymptoms('ebola')">
+							<span>
+								Ebola Disease
+							</span>
+						</label>
+						<label>
+							<input type="radio" name="covid-diseases" value="covid-diseases" ng-model="selectedDisease"
+								ng-click="getSymptoms('covid-19')">
+							<span>
+								Covid-19 Disease
+							</span>
+						</label>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

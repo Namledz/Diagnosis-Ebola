@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html ng-app="MyApp">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Diagnosis</title>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans|Raleway|Candal">
+	<link rel="stylesheet" type="text/css" href="/public/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/font-awesome.min.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" type="text/css"
+		href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/public/css/common.css">
+	<link rel="stylesheet" href="/public/css/form-list.css" type="text/css">
+	<link rel="stylesheet" href="/public/css/right-side-menu.css">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<script src="/public/js/jquery.min.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<script src="/public/js/jquery.easing.min.js"></script>
+	<script src="/public/js/bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular-animate.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.7.9/angular-sanitize.min.js"></script>
+	<script src="/public/js/common.js"></script>
+	<script src="/public/js/diagnosis.js"></script>
+
+
+</head>
+
+<body ng-controller="HomePageController" id="myPage" data-spy="scroll" ng-cloak data-target=".navbar" data-offset="60">
+	
+	<%- include('partials/header.ejs') %>
+	<div ng-show="selectedDisease == ''">
+		<%- include('diagnosis/menu.ejs') %>
+	</div>
+	<div ng-show="selectedDisease == 'ebola'">
+		<%- include('diagnosis/ebola.ejs') %>
+	</div>
+	<div ng-show="selectedDisease == 'covid-19'">
+		<%- include('diagnosis/covid-19.ejs') %>
+	</div>
+	<%- include('partials/footer.ejs') %>
+	
+	<script>
+		(function ($) {
+
+			// Add smooth scrolling to all links in navbar
+			$(".navbar a,a.btn-appoint, .quick-info li a, .overlay-detail a").on('click', function (event) {
+
+				var hash = this.hash;
+				if (hash) {
+					event.preventDefault();
+					$('html, body').animate({
+						scrollTop: $(hash).offset().top
+					}, 900, function () {
+						window.location.hash = hash;
+					});
+				}
+
+			});
+
+			$(".navbar-collapse a").on('click', function () {
+				$(".navbar-collapse.collapse").removeClass('in');
+			});
+
+			//jQuery to collapse the navbar on scroll
+			$(window).scroll(function () {
+				if ($(".navbar-default").offset().top > 50) {
+					$(".navbar-fixed-top").addClass("top-nav-collapse");
+				} else {
+					$(".navbar-fixed-top").removeClass("top-nav-collapse");
+				}
+			});
+
+		})(jQuery);
+
+	</script>
+</body>
+
+</html>

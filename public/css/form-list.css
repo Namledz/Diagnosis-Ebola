@@ -560,7 +560,7 @@ input.radio-input[type="radio"]:checked+label.living-area:after {
 	input.radio-input[type="radio"]:checked+label.living-area:after {
 		width: 10px;
 		height: 10px;
-		top: 15 px;
+		top: 14px;
 		left: 15px;
 	}
 }

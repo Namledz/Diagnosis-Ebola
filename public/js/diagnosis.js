@@ -154,21 +154,6 @@ myApp.controller('HomePageController', [
 			return data;
 		}
 
-		// Clear data
-
-		$scope.clearData = () => {
-			$scope.currentScreen = { title: 'Sex', index: 0 }
-			$scope.controls = {
-				screen: {
-					previous: false,
-					next: true,
-					isCompleted: false,
-				},
-				question: {
-					isAnswered: false,
-				}
-			}
-		}
 
 		$scope.getDiseases = () => {
 
@@ -409,6 +394,43 @@ myApp.controller('HomePageController', [
 					toastr['error']('Unknown Error', "Ebola Diagnosis")
 					$('body').removeClass('blur-loading')
 				})
+		}
+
+
+		// Clear data
+
+		$scope.clearData = () => {
+			$scope.currentScreen = { title: 'Sex', index: 0 }
+			$scope.controls = {
+				screen: {
+					previous: false,
+					next: true,
+					isCompleted: false,
+				},
+				question: {
+					isAnswered: false,
+				}
+			}
+			$scope.formFields = {}
+			$scope.blockIsActivated = $scope.sectionBlock[0]
+			$scope.selectedDisease = ''
+			$scope.listAreaChoosen = [];
+			$scope.results = {}
+			$scope.setUpAgeTooltip()
+		}
+
+		$scope.reAnalyze = () => {
+			$('body').addClass('blur-loading')
+			$scope.clearData();
+			$('input[type="radio"]').prop('checked', false);
+			$('path.selected').removeClass('selected')
+			$('html, body').animate({
+				scrollTop: $("#service").offset().top
+			},100);
+			$timeout(() => {
+				$('body').removeClass('blur-loading')
+			},500)
+			
 		}
 	}
 

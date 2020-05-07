@@ -334,6 +334,12 @@ myApp.controller('HomePageController', [
 
 		$scope.results = {}
 
+		$scope.getResultClass = () => {
+			if ($scope.results.conclusion == 'Low') return 'green'
+			if ($scope.results.conclusion == 'Medium') return 'orange'
+			if ($scope.results.conclusion == 'High') return 'danger'
+		}
+
 		$scope.submitForm = () => {
 			$scope.formFields.threeMonthVisited = $scope.formFields.regionsAffected != null ? true : false;
 			let moderate = "Moderate"

@@ -28,7 +28,7 @@ myApp.controller('HomePageController', [
 			},
 		]
 
-		$scope.screenBlock = ['Sex', 'Age', 'Living Area', 'Symptoms', 'Regions', 'Overview']
+		$scope.screenBlock = []
 
 		$scope.currentScreen = { title: 'Sex', index: 0 }
 
@@ -68,7 +68,8 @@ myApp.controller('HomePageController', [
 			let checkAnswered = $scope.isScreenAnswered($scope.currentScreen)
 
 			if (checkAnswered.status == "Not Finish") {
-				toastr[checkAnswered.type](checkAnswered.message, "Ebola Diagnosis")
+				let title = ($scope.selectedDisease == "covid-19") ? "Covid-19 Diagnosis" : 'Ebola Diagnosis'
+				toastr[checkAnswered.type](checkAnswered.message, title)
 				return;
 			}
 
@@ -131,6 +132,7 @@ myApp.controller('HomePageController', [
 					form.symptoms.forEach(symptom => {
 						if (!symptom.isAnswered) {
 							$(`#choosing_symptom_${symptom.id}`).addClass('unchecked-symptom')
+							console.log(`123 #choosing_symptom_${symptom.id}`)
 							data.status = 'Not Finish'
 							data.message = 'Please make sure you have filled up all your possibilities symptoms!'
 						} else {
@@ -163,22 +165,28 @@ myApp.controller('HomePageController', [
 
 		$scope.getSymptoms = (name) => {
 			$scope.selectedDisease = name
-			let diseaseName = name == 'covid-19' ? 'covid-19' : 'ebola';
-			let url = `/get-${diseaseName}-symptoms`
+			let selectedDisease = (name == 'covid-19') ? 'covid-19' : 'ebola';
+
+			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'Age', 'Symptoms', 'Regions', 'Overview']
+			else $scope.screenBlock = ['Sex', 'Age', 'Living Area', 'Symptoms', 'Regions', 'Overview']
+
+			let url = `/get-${selectedDisease}-symptoms`
 			$('body').addClass('blur-loading')
 			$http.get(url)
 				.then((data) => {
 					window.location.href = '#service'
 					if (data.status == 200) {
 						$scope.formFields = data.data;
+
+						$scope.setUpAgeTooltip()
 					}
 					$timeout(() => {
 						$('body').removeClass('blur-loading')
 					}, 600)
 				})
 				.catch(err => {
-					toastr['error']('Unknown Error', "Ebola Diagnosis")
-					console.log(error)
+					toastr['error']('Unknown Error', "Diagnosis")
+					console.log(err)
 				})
 		}
 
@@ -197,10 +205,10 @@ myApp.controller('HomePageController', [
 			let sliderToolTip = (event, ui) => {
 				var curAge = ui.value || 65
 				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curAge + '</div></div>';
-				$('#age-range .ui-slider-handle').html(tooltip);
+				$(`#age-range-${$scope.selectedDisease} .ui-slider-handle`).html(tooltip);
 				$scope.formFields.age = ui.value || 65
 			}
-			$("#age-range").slider({
+			$(`#age-range-${$scope.selectedDisease}`).slider({
 				range: "max",
 				min: 1, // Change this to change the min value
 				max: 130, // Change this to change the max value
@@ -210,7 +218,7 @@ myApp.controller('HomePageController', [
 				slide: sliderToolTip
 			});
 		}
-		$scope.setUpAgeTooltip()
+
 
 		// Symptoms
 
@@ -326,17 +334,29 @@ myApp.controller('HomePageController', [
 		}
 
 		$scope.submitForm = () => {
+			if ($scope.selectedDisease == 'ebola') {
+				$scope.submitFormEbola();
+				console.log(123)
+			}
+			else {
+				$scope.submitFormCovid19()
+				console.log(456)
+			}
+		}
+
+		$scope.submitFormEbola = () => {
 			$scope.formFields.threeMonthVisited = $scope.formFields.regionsAffected != null ? true : false;
 			let moderate = "Moderate"
 			let mild = "Mild"
 			let severe = "Severe"
+			let NotAffected = 'NotAffected'
 			let form = $scope.formFields;
 			let symptoms = {}
 			let convertSymptoms = form.symptoms.map((symptom) => {
 				if (symptom.linguistic == mild) symptom.fuzzyValue = 0
 				if (symptom.linguistic == moderate) symptom.fuzzyValue = 1
 				if (symptom.linguistic == severe) symptom.fuzzyValue = 2
-				if (symptom.isNotAffected) symptom.fuzzyValue = -1
+				if (symptom.linguistic == NotAffected) symptom.fuzzyValue = -1;
 				return { title: symptom.title, value: symptom.fuzzyValue }
 			})
 			convertSymptoms.forEach(element => {
@@ -388,7 +408,7 @@ myApp.controller('HomePageController', [
 					}
 					$scope.results.intensity = result.intensity;
 					$('body').removeClass('blur-loading')
-					$("#reulstModal").modal()
+					$("#resultModal-ebola").modal()
 				})
 				.catch(err => {
 					toastr['error']('Unknown Error', "Ebola Diagnosis")
@@ -396,6 +416,15 @@ myApp.controller('HomePageController', [
 				})
 		}
 
+		$scope.submitFormCovid19 = () => {
+			$('body').addClass('blur-loading')
+			$scope.results.intensity = 60;
+			$scope.results.conclusion = 'Medium'
+			$scope.results.title = 'See a doctor immediately'
+			$scope.results.message = 'Your symptoms are serious, Schedule an appointment with your doctor.'
+			$('body').removeClass('blur-loading')
+			$("#resultModal-covid-19").modal()
+		}
 
 		// Clear data
 
@@ -420,20 +449,35 @@ myApp.controller('HomePageController', [
 		}
 
 		$scope.reAnalyze = () => {
-			$('body').addClass('blur-loading')
-			$scope.clearData();
-			$('input[type="radio"]').prop('checked', false);
-			$('path.selected').removeClass('selected')
-			$('html, body').animate({
-				scrollTop: $("#service").offset().top
-			},100);
-			$timeout(() => {
-				$('body').removeClass('blur-loading')
-			},500)
-			
+			// $('body').addClass('blur-loading')
+			// $scope.clearData();
+			// $('input[type="radio"]').prop('checked', false);
+			// $('path.selected').removeClass('selected')
+			// $('html, body').animate({
+			// 	scrollTop: $("#service").offset().top
+			// }, 100);
+			// $timeout(() => {
+			// 	$('body').removeClass('blur-loading')
+			// }, 500)
+			location.reload()
+		}
+
+		$scope.clickTest = () => {
+			$http.post('/getConclusions', { 'test': 123 })
+				.then(res => {
+
+				})
+				.catch(err => {
+
+				})
+		}
+
+		$scope.checkCovidRangeSymptoms = (id) => {
+			let range = ['CH', 'CD', 'BS']
+			if (range.indexOf(id) != -1) return false;
+			else return true;
 		}
 	}
-
 
 ])
 

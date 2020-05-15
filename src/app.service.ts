@@ -99,6 +99,91 @@ export class AppService {
 	}
 
 	getCovidSymptoms(): object {
-		return {}
+		let formFields = {
+			sex: '',
+			age: 65,
+			symptoms: [
+				{
+					id: 'AT',
+					title: 'Atmospheric Temperature',	
+					linguistic: '',
+					isNotAffected: false,
+					isAnswered: false
+				},
+				{
+					id: 'BS',
+					title: 'Breath Shortness',
+					linguistic: '',
+					isNotAffected: false,
+					isAnswered: false
+				},
+				{
+					id: 'ET',
+					title: 'Ethanol',
+					linguistic: '',
+					isNotAffected: false,
+					isAnswered: false
+				},
+				{
+					id: 'BT',
+					title: 'Body Tempature',
+					linguistic: '',
+					isNotAffected: false,
+					isAnswered: false
+				},
+				{
+					id: "CD",
+					title: 'Cold',
+					linguistic: '',
+					isNotAffected: false,
+					isAnswered: false
+				},
+				{
+					id: "CH",
+					title: 'Cough',
+					linguistic: '',
+					isNotAffected: false,
+					isAnswered: false
+				}
+			],
+			setNoSymptoms: (id) => {
+				formFields.symptoms.forEach(element => {
+					if (element.id == id) {
+						element.isNotAffected = true;
+						element.linguistic = ''
+					}
+				});
+			},
+			regionsAffected: null,
+			patientInfo: {
+				name: '',
+				email: ''
+			}
+		}
+
+		return formFields;
+	}
+
+	getConclusions(): object {
+		let symptoms = ["bleedingEyes", "bloodyCough", "bleedingGums", "bleedingMouth", "backache", "breathingDifficulty", "chestPain", "fever", "fatigue", "regionIsAfrica", "africaVisited", "threeMonthVisisted"]
+
+		let constMild = 0.2;
+		let constModerate = 0.45;
+		let constServere = 0.7;
+
+		let ruleResult = [];
+
+		return { 'test': 123 }
+	}
+
+
+
+	getNonZeroMinmumValue(array: Array<number>): number {
+		let result;
+		array.sort((a, b) => { return a - b })
+		for (let i in array) {
+			if (array[i] != 0) result = array[i]; break
+		}
+		return result
 	}
 }

@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Res, Render } from '@nestjs/common';
+import { Controller, Get, Post, Body, Res, Req, Param, Render } from '@nestjs/common';
 import { AppService } from './app.service';
 import { Response } from 'express';
+import { Request } from 'express';
+const data = require("../data/data.json");
 
-@Controller()
+@Controller()	
 export class AppController {
 	constructor(private readonly appService: AppService) { }
 
@@ -17,7 +19,7 @@ export class AppController {
 		return this.appService.getEbolaSymptoms()
 	}
 
-	@Get('/get-covid-symtoms')
+	@Get('/get-covid-19-symptoms')
 	getCovid() {
 		return this.appService.getCovidSymptoms()
 	}
@@ -26,5 +28,13 @@ export class AppController {
 	@Render('admin/index.ejs')
 	admin(){
 		return
+	}
+
+	@Post('/getConclusions')
+	getConclusions(@Req() request: Request ) {
+		// console.log(data)
+		console.log(request.body)
+		console.log(12313123)
+		// return this.appService.getConclusions()
 	}
 }

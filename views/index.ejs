@@ -33,13 +33,13 @@
 <body ng-controller="HomePageController" id="myPage" data-spy="scroll" ng-cloak data-target=".navbar" data-offset="60">
 	
 	<%- include('partials/header.ejs') %>
-	<div ng-show="selectedDisease == ''">
+	<div ng-if="selectedDisease == ''">
 		<%- include('diagnosis/menu.ejs') %>
 	</div>
-	<div ng-show="selectedDisease == 'ebola'">
+	<div ng-if="selectedDisease == 'ebola'">
 		<%- include('diagnosis/ebola.ejs') %>
 	</div>
-	<div ng-show="selectedDisease == 'covid-19'">
+	<div ng-if="selectedDisease == 'covid-19'">
 		<%- include('diagnosis/covid-19.ejs') %>
 	</div>
 	<%- include('partials/footer.ejs') %>

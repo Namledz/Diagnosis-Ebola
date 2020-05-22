@@ -1,11 +1,11 @@
-<div class="modal fade" id="resultModal-{{selectedDisease}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-	aria-hidden="true">
+<div class="modal fade" id="resultModal-{{selectedDisease}}" tabindex="-1" role="dialog"
+	aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 style="float: left;" class="modal-title" id="exampleModalLabel">Your Result</h4>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>	
+					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
 			<div class="modal-body">
@@ -129,8 +129,8 @@
 											<p class="name">{{symptom.title}}</p>
 											<div class="buttons" ng-if='checkCovidRangeSymptoms(symptom.id)'>
 												<input type="radio" name="choice_symptom_{{symptom.id}}_Low"
-													id="choice_symptom_{{symptom.id}}_Low"
-													ng-model="symptom.linguistic" value="Low"
+													id="choice_symptom_{{symptom.id}}_Low" ng-model="symptom.linguistic"
+													value="Low"
 													ng-click="symptom.linguistic = 'Low'; hadCheckedSymptom(symptom.id)"
 													class="radio-input">
 												<label class="radio-label" for="choice_symptom_{{symptom.id}}_Low">
@@ -153,15 +153,15 @@
 											<div class="buttons" ng-if='!checkCovidRangeSymptoms(symptom.id)' style="margin-right: 122px;">
 												<input type="radio" name="choice_symptom_{{symptom.id}}_Yes"
 													id="choice_symptom_{{symptom.id}}_Yes"
-													ng-model="symptom.linguistic" value="yes"
-													ng-click="symptom.linguistic = 'yes'; hadCheckedSymptom(symptom.id)"
+													ng-model="symptom.linguistic" value="1"
+													ng-click="symptom.linguistic = '1'; hadCheckedSymptom(symptom.id)"
 													class="radio-input">
 												<label class="radio-label" for="choice_symptom_{{symptom.id}}_Yes" style="margin-right: 22px;">
 													Yes </label>
 												<input type="radio" name="choice_symptom_{{symptom.id}}_No"
 													id="choice_symptom_{{symptom.id}}_No"
-													ng-model="symptom.linguistic" value="no"
-													ng-click="symptom.linguistic = 'no'; hadCheckedSymptom(symptom.id)"
+													ng-model="symptom.linguistic" value="0"
+													ng-click="symptom.linguistic = '0'; hadCheckedSymptom(symptom.id)"
 													class="radio-input">
 												<label class="radio-label" for="choice_symptom_{{symptom.id}}_No">
 													No</label>
@@ -173,6 +173,70 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Ethanol -->
+				<div ng-show="showScreenSection('Ethanol')">
+					<div class="screen-container fade" ng-show="showScreenSection('Ethanol')">
+						<div class="screen screen-number-input">
+							<div class="screen-content">
+								<div class="screen-text-header">
+									<h3>Please select Ethanol level of your body (mg/dl)</h3>
+								</div>
+								<form name="screenForm">
+									<div class="slider-wrapper">
+										<div id="ethanol-range-covid-19" class="slider"></div>
+									</div>
+									<button class="control control-minus"></button>
+									<button id="button-ethanol-range-covid-19" ng-click="" class="control control-plus"></button>
+								</form>
+								<p style="padding-top: 30px; font-size: 18px;">Your Ethanol Level is: <b>{{ formFields.ethanol }} mg/dl</b></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Body-Tempature -->
+				<div ng-show="showScreenSection('Body-Tempature')">
+					<div class="screen-container fade" ng-show="showScreenSection('Body-Tempature')">
+						<div class="screen screen-number-input">
+							<div class="screen-content">
+								<div class="screen-text-header">
+									<h3>Please select your body tempature (°F)</h3>
+								</div>
+								<form name="screenForm">
+									<div class="slider-wrapper">
+										<div id="body-tempature-range-covid-19" class="slider"></div>
+									</div>
+									<button class="control control-minus"></button>
+									<button id="button-body-tempature-range-covid-19" ng-click="" class="control control-plus"></button>
+								</form>
+								<p style="padding-top: 30px; font-size: 18px;">Your body tempature is: <b>{{ formFields.bodyTemperature }} °F</b></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Atmospheric-Temperature -->
+				<div ng-show="showScreenSection('Atmospheric-Temperature')">
+					<div class="screen-container fade" ng-show="showScreenSection('Atmospheric-Temperature')">
+						<div class="screen screen-number-input">
+							<div class="screen-content">
+								<div class="screen-text-header">
+									<h3>Please select the Atmospheric Temperature (°C)</h3>
+								</div>
+								<form name="screenForm">
+									<div class="slider-wrapper">
+										<div id="atmospheric-temperature-range-covid-19" class="slider"></div>
+									</div>
+									<button class="control control-minus"></button>
+									<button id="button-atmospheric-temperature-range-covid-19" ng-click="" class="control control-plus"></button>
+								</form>
+								<p style="padding-top: 30px; font-size: 18px;">The Atmospheric Temperature is: <b>{{ formFields.atmosphericTemperature }} °C</b></p>
+							</div>
+						</div>
+					</div>
+				</div>
+
 
 				<!-- Regions -->
 

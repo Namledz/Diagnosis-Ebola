@@ -372,7 +372,7 @@ span.ui-slider-handle.ui-state-default.ui-corner-all:after {
 	}
 }
 
-#age-range-ebola .tooltip, #age-range-covid-19 .tooltip	 {
+#age-range-ebola .tooltip, #age-range-covid-19 .tooltip, #ethanol-range-covid-19 .tooltip, #body-tempature-range-covid-19 .tooltip, #atmospheric-temperature-range-covid-19 .tooltip {
 	top: -58px;
 	font-size: 22px;
 	color: #2B3535;

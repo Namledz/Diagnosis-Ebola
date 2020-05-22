@@ -102,31 +102,13 @@ export class AppService {
 		let formFields = {
 			sex: '',
 			age: 65,
+			ethanol: null,
+			atmosphericTemperature: null,
+			bodyTemperature: null,
 			symptoms: [
-				{
-					id: 'AT',
-					title: 'Atmospheric Temperature',	
-					linguistic: '',
-					isNotAffected: false,
-					isAnswered: false
-				},
 				{
 					id: 'BS',
 					title: 'Breath Shortness',
-					linguistic: '',
-					isNotAffected: false,
-					isAnswered: false
-				},
-				{
-					id: 'ET',
-					title: 'Ethanol',
-					linguistic: '',
-					isNotAffected: false,
-					isAnswered: false
-				},
-				{
-					id: 'BT',
-					title: 'Body Tempature',
 					linguistic: '',
 					isNotAffected: false,
 					isAnswered: false

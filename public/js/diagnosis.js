@@ -167,7 +167,7 @@ myApp.controller('HomePageController', [
 			$scope.selectedDisease = name
 			let selectedDisease = (name == 'covid-19') ? 'covid-19' : 'ebola';
 
-			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'Age', 'Symptoms', 'Regions', 'Overview']
+			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'Age', 'Symptoms', 'Ethanol', 'Body-Tempature', 'Atmospheric-Temperature', 'Regions', 'Overview']
 			else $scope.screenBlock = ['Sex', 'Age', 'Living Area', 'Symptoms', 'Regions', 'Overview']
 
 			let url = `/get-${selectedDisease}-symptoms`
@@ -177,8 +177,7 @@ myApp.controller('HomePageController', [
 					window.location.href = '#service'
 					if (data.status == 200) {
 						$scope.formFields = data.data;
-
-						$scope.setUpAgeTooltip()
+						$scope.setUpTooltips();
 					}
 					$timeout(() => {
 						$('body').removeClass('blur-loading')
@@ -188,6 +187,13 @@ myApp.controller('HomePageController', [
 					toastr['error']('Unknown Error', "Diagnosis")
 					console.log(err)
 				})
+		}
+
+		$scope.setUpTooltips = () => {
+			$scope.setUpAgeTooltip();
+			$scope.setUpEthanolTooltip();
+			$scope.setUpBodyTempatureTooltip();
+			$scope.setUpAtmosphericTemperatureTooltip();
 		}
 
 		//  Sex
@@ -229,6 +235,74 @@ myApp.controller('HomePageController', [
 					$(`#choosing_symptom_${symptom.id}`).removeClass('unchecked-symptom')
 				}
 			})
+			console.log($scope.formFields.symptoms)
+			console.log(123)
+		}
+
+		// Ethanol level
+
+		$scope.setUpEthanolTooltip = () => {
+			let sliderToolTip = (event, ui) => {
+				var curValue = ui.value || 95
+				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
+				$(`#ethanol-range-covid-19 .ui-slider-handle`).html(tooltip);
+				$scope.formFields.ethanol = ui.value || 95
+				angular.element('#button-ethanol-range-covid-19').triggerHandler('click')
+			}
+			$(`#ethanol-range-covid-19`).slider({
+				range: "max",
+				min: 0, // Change this to change the min value
+				max: 190, // Change this to change the max value
+				value: 95, // Change this to change the display value
+				step: 1, // Change this to change the increment by value.
+				create: sliderToolTip,
+				slide: sliderToolTip
+			});
+		}
+
+		// Body Tempature
+
+		$scope.setUpBodyTempatureTooltip = () => {
+			let sliderToolTip = (event, ui) => {
+				var curValue = ui.value || 100
+				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
+				$(`#body-tempature-range-covid-19 .ui-slider-handle`).html(tooltip);
+				$scope.formFields.bodyTemperature = ui.value || 100
+				angular.element('#button-body-tempature-range-covid-19').triggerHandler('click')
+			}
+			$(`#body-tempature-range-covid-19`).slider({
+				range: "max",
+				min: 95, // Change this to change the min value
+				max: 105, // Change this to change the max value
+				value: 100, // Change this to change the display value
+				step: 1, // Change this to change the increment by value.
+				create: sliderToolTip,
+				slide: sliderToolTip
+			});
+		}
+
+		$scope.testClick = () => {
+			console.log(123123123)
+		}
+
+		// Atmospheric Temperature
+		$scope.setUpAtmosphericTemperatureTooltip = () => {
+			let sliderToolTip = (event, ui) => {
+				var curValue = ui.value || 30
+				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
+				$(`#atmospheric-temperature-range-covid-19 .ui-slider-handle`).html(tooltip);
+				$scope.formFields.atmosphericTemperature = ui.value || 30
+				angular.element('#button-atmospheric-temperature-range-covid-19').triggerHandler('click')
+			}
+			$(`#atmospheric-temperature-range-covid-19`).slider({
+				range: "max",
+				min: 0, // Change this to change the min value
+				max: 60, // Change this to change the max value
+				value: 30, // Change this to change the display value
+				step: 1, // Change this to change the increment by value.
+				create: sliderToolTip,
+				slide: sliderToolTip
+			});
 		}
 
 		// Region
@@ -417,13 +491,45 @@ myApp.controller('HomePageController', [
 		}
 
 		$scope.submitFormCovid19 = () => {
+			let data = {
+				"atmosphericTemperature": $scope.formFields.atmosphericTemperature,
+				"bodyTemperature": $scope.formFields.bodyTemperature,
+				"ethanol": $scope.formFields.ethanol,
+				"cold": parseInt($scope.formFields.symptoms[1].linguistic),
+				"cough": parseInt($scope.formFields.symptoms[2].linguistic),
+				"breathShortness": parseInt($scope.formFields.symptoms[0].linguistic)
+			}
+			console.log(data)
+
 			$('body').addClass('blur-loading')
-			$scope.results.intensity = 60;
-			$scope.results.conclusion = 'Medium'
-			$scope.results.title = 'See a doctor immediately'
-			$scope.results.message = 'Your symptoms are serious, Schedule an appointment with your doctor.'
-			$('body').removeClass('blur-loading')
-			$("#resultModal-covid-19").modal()
+			$http.post('https://disease-diagnosis.herokuapp.com/covid-diagnosis', data)
+				.then(res => {
+					let result = res.data;
+					if (result.level == "LESS SEVERE") {
+						$scope.results.conclusion = 'Low'
+						$scope.results.title = 'Consult a doctor'
+						$scope.results.message = 'The symptoms may require medical evaluation. Please avoid close contact with other people (social distancing), looking after The wellbeing and using the NHS and other services.'
+					}
+					if (result.level == "NORMAL") {
+						$scope.results.conclusion = 'Medium'
+						$scope.results.title = 'See a doctor immediately'
+						$scope.results.message = 'The symptoms are serious. Seek immediate medical attention if you have serious symptoms. Always call before visiting your doctor or health facility.'
+					}
+					if (result.level == "SEVERE") {
+						$scope.results.conclusion = 'High'
+						$scope.results.title = 'Call an ambulance'
+						$scope.results.message = "The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
+					}
+					$scope.results.intensity = result.intensity;
+					$('body').removeClass('blur-loading')
+					$("#resultModal-covid-19").modal()
+				})
+				.catch(err => {
+					toastr['error']('Unknown Error', "Covid-19 Diagnosis")
+					$('body').removeClass('blur-loading')
+				})
+
+
 		}
 
 		// Clear data

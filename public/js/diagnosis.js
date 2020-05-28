@@ -542,6 +542,8 @@ myApp.controller('HomePageController', [
 					$scope.results.intensity = result.intensity;
 					$('body').removeClass('blur-loading')
 					$("#resultModal-ebola").modal()
+					
+					$timeout($scope.addPatientInfo(), 500)
 				})
 				.catch(err => {
 					toastr['error']('Unknown Error', "Ebola Diagnosis")

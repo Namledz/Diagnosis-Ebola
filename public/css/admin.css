@@ -1,0 +1,22 @@
+.table thead {
+	background-color: #45628e;
+	color: #fff;
+}
+
+.dataTables_length label {
+	font-size: 14px;
+	font-weight: 500;
+	font-style: italic;
+}
+
+#tbl-patient-lists thead tr th {
+	font-weight: 500 !important;
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}

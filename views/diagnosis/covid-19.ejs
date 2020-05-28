@@ -11,7 +11,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-4">
-						<svg viewBox="0 0 36 36" class="circular-chart" ng-class="getResultClass()">
+						<svg viewBox="0 0 36 36" class="circular-chart" ng-class="getResultCovidClass()">
 							<path class="circle-bg" d="M18 2.0845
 				          a 15.9155 15.9155 0 0 1 0 31.831
 				          a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -25,6 +25,10 @@
 						<h3>{{results.title}}</h3>
 						<p>{{results.message}}</p>
 						<p>Your Covid-19 intensity was: {{results.intensity}}%</p>
+						<p ng-if="alarmingSymptoms.length > 0" style="font-weight: bold; color: #913a3e; margin-top: 30px; font-size: 17px;">Alarming Symptoms:</p>
+						<ul ng-if="alarmingSymptoms.length > 0" style="list-style: inherit; margin-bottom: 20px">
+							<li ng-repeat="symptom in alarmingSymptoms">{{symptom}}</li>
+						</ul>
 					</div>
 				</div>
 			</div>
@@ -117,7 +121,7 @@
 				<!-- Symptoms -->
 				<div ng-show="showScreenSection('Symptoms')">
 					<div class="screen-container fade" ng-show="showScreenSection('Symptoms')">
-						<div class="screen screen-symptoms-input" style="height: 560px;">
+						<div class="screen screen-symptoms-input" style="height: 470px;">
 							<div class="screen-content">
 								<div class="screen-text-header">
 									<h3>Please check all the statements below that apply to you</h3>
@@ -150,17 +154,19 @@
 												<label class="radio-label" for="choice_symptom_{{symptom.id}}_High">
 													High</label>
 											</div>
-											<div class="buttons" ng-if='!checkCovidRangeSymptoms(symptom.id)' style="margin-right: 122px;">
+											<div class="buttons" ng-if='!checkCovidRangeSymptoms(symptom.id)'
+												style="margin-right: 122px;">
 												<input type="radio" name="choice_symptom_{{symptom.id}}_Yes"
-													id="choice_symptom_{{symptom.id}}_Yes"
-													ng-model="symptom.linguistic" value="1"
+													id="choice_symptom_{{symptom.id}}_Yes" ng-model="symptom.linguistic"
+													value="1"
 													ng-click="symptom.linguistic = '1'; hadCheckedSymptom(symptom.id)"
 													class="radio-input">
-												<label class="radio-label" for="choice_symptom_{{symptom.id}}_Yes" style="margin-right: 22px;">
+												<label class="radio-label" for="choice_symptom_{{symptom.id}}_Yes"
+													style="margin-right: 22px;">
 													Yes </label>
 												<input type="radio" name="choice_symptom_{{symptom.id}}_No"
-													id="choice_symptom_{{symptom.id}}_No"
-													ng-model="symptom.linguistic" value="0"
+													id="choice_symptom_{{symptom.id}}_No" ng-model="symptom.linguistic"
+													value="0"
 													ng-click="symptom.linguistic = '0'; hadCheckedSymptom(symptom.id)"
 													class="radio-input">
 												<label class="radio-label" for="choice_symptom_{{symptom.id}}_No">
@@ -187,9 +193,11 @@
 										<div id="ethanol-range-covid-19" class="slider"></div>
 									</div>
 									<button class="control control-minus"></button>
-									<button id="button-ethanol-range-covid-19" ng-click="" class="control control-plus"></button>
+									<button id="button-ethanol-range-covid-19" ng-click=""
+										class="control control-plus"></button>
 								</form>
-								<p style="padding-top: 30px; font-size: 18px;">Your Ethanol Level is: <b>{{ formFields.ethanol }} mg/dl</b></p>
+								<p style="padding-top: 30px; font-size: 18px;">Your Ethanol Level is:
+									<b>{{ formFields.ethanol }} mg/dl</b></p>
 							</div>
 						</div>
 					</div>
@@ -208,9 +216,11 @@
 										<div id="body-tempature-range-covid-19" class="slider"></div>
 									</div>
 									<button class="control control-minus"></button>
-									<button id="button-body-tempature-range-covid-19" ng-click="" class="control control-plus"></button>
+									<button id="button-body-tempature-range-covid-19" ng-click=""
+										class="control control-plus"></button>
 								</form>
-								<p style="padding-top: 30px; font-size: 18px;">Your body tempature is: <b>{{ formFields.bodyTemperature }} °F</b></p>
+								<p style="padding-top: 30px; font-size: 18px;">Your body tempature is:
+									<b>{{ formFields.bodyTemperature }} °F</b></p>
 							</div>
 						</div>
 					</div>
@@ -229,9 +239,11 @@
 										<div id="atmospheric-temperature-range-covid-19" class="slider"></div>
 									</div>
 									<button class="control control-minus"></button>
-									<button id="button-atmospheric-temperature-range-covid-19" ng-click="" class="control control-plus"></button>
+									<button id="button-atmospheric-temperature-range-covid-19" ng-click=""
+										class="control control-plus"></button>
 								</form>
-								<p style="padding-top: 30px; font-size: 18px;">The Atmospheric Temperature is: <b>{{ formFields.atmosphericTemperature }} °C</b></p>
+								<p style="padding-top: 30px; font-size: 18px;">The Atmospheric Temperature is:
+									<b>{{ formFields.atmosphericTemperature }} °C</b></p>
 							</div>
 						</div>
 					</div>
@@ -242,7 +254,7 @@
 
 				<div ng-show="showScreenSection('Regions')">
 					<div class="screen-container fade" ng-show="showScreenSection('Regions')">
-						<div class="screen screen-map-select" style="height: 550px;">
+						<div class="screen screen-map-select" style="height: 520px;">
 							<div class="screen-content">
 								<div class="screen-text-header">
 									<h3>Select regions</h3>
@@ -1310,6 +1322,44 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- Docter part -->
+
+				<div ng-show="showScreenSection('Docter-Diagnosis')" id="docter-diagnosis">
+					<div class="screen-container fade" ng-show="showScreenSection('Docter-Diagnosis')">
+						<div class="screen screen-overview-input" style="height: 630px;" >
+							<div class="screen-content">
+								<div class="screen-text-header">
+									<h3>Docters Diagnosis</h3>
+								</div>
+								<div class="form-group form-inline number-docter" id="numberOfDoctors">
+									<label>Number of Docters participate in diagnosis:</label>
+									<input type="number" style="float: left;"  min="0" class="form-control" ng-model="docterDiagnosis.numberOfDoctors">
+								</div>
+								<div style="clear: both;"></div>
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col" style="text-align: left; padding-left: 12px;">Symptoms</th>
+											<th scope="col">Positive (+)</th>
+											<th scope="col">Neutral</th>
+											<th scope="col">Negative (-)</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr ng-repeat="predict in docterDiagnosis.predictions" id="docter_prediction_{{predict.id}}">
+											<th scope="row" style="vertical-align: middle;">{{ predict.name }}</th>
+											<td><input type="number" class="form-control" ng-model="predict.prediction.positive"></td>
+											<td><input type="number" class="form-control" ng-model="predict.prediction.neutral"></td>
+											<td><input type="number" class="form-control" ng-model="predict.prediction.negative"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+
 
 				<!-- Over view -->
 

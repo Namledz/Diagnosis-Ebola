@@ -688,3 +688,46 @@ input.radio-input[type="radio"]:checked+label.living-area:after {
 	font-size: 0.5em;
 	text-anchor: middle;
 }
+
+/* Docter Diagnosis */
+
+#docter-diagnosis table {
+	margin-left: 100px;
+	margin-right: 100px;
+	margin-top: 30px;
+	width: 80%;
+}
+
+#docter-diagnosis table tr th {
+	text-align: center;
+}
+
+#docter-diagnosis table tbody tr td {
+	width: 170px;
+}
+
+#docter-diagnosis table tbody tr th, td {
+	padding: 12px !important;
+}
+
+#docter-diagnosis table tbody tr th {
+	text-align: left;
+	padding-right: 0px !important;
+}
+
+#docter-diagnosis table thead tr th {
+	padding-bottom: 10px;
+}
+
+#docter-diagnosis div.number-docter {
+	margin-left: 100px;
+	margin-bottom: 40px;
+}
+
+#docter-diagnosis div.number-docter label {
+	width: 340px;
+	float: left;
+	text-align: left;
+	padding-top: 6px;
+	margin-left: 9px;
+}

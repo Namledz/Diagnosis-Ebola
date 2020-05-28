@@ -1,4 +1,3 @@
 module.exports = {
 	data_path: '/mnt/f/LTU/2020_01/AI/Project/Diagnosis-Ebola/data/',
-	patient_data_path: `${this.data_path}/patient_data.tsv`
 }

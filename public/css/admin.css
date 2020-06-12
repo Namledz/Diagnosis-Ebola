@@ -1,5 +1,5 @@
 .table thead {
-	background-color: #45628e;
+	background-color: #578bd8;
 	color: #fff;
 }
 
@@ -19,4 +19,20 @@
 
 .capitalize {
 	text-transform: capitalize;
+}
+
+.view-patient-detail {
+	font-size: 12px;
+    height: 28px;
+    padding: 5px 13px 5px 13px;
+}
+
+.mb-10 {
+	margin-bottom: 10px;
+}
+
+.btn-view-patient{
+	background-color: #578bd8;
+	border-color: #578bd8;
+	color: #fff;
 }

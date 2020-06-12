@@ -1,112 +1,19 @@
 [
 	{
 		"id": 2,
-		"patient_name": "IU",
-		"sex": "female",
-		"age": 15,
-		"disease": "Covid-19 Disease",
-		"conclusion": "Low Risk",
-		"intensity": "42.50",
-		"email": "iu@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 3,
-		"patient_name": "Cong chua bong bong",
+		"patient_name": "Nam",
 		"sex": "male",
 		"age": 65,
 		"disease": "Covid-19 Disease",
 		"conclusion": "Low Risk",
-		"intensity": "24.33",
-		"email": "congchuabongbong@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 4,
-		"patient_name": "The Beatles",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "Low Risk",
-		"intensity": "25.00",
-		"email": "beatles1970@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 5,
-		"patient_name": "nana",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "Low Risk",
-		"intensity": "8.33",
-		"email": "nana@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 6,
-		"patient_name": "Jude",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "High Risk",
-		"intensity": "90.00",
-		"email": "jude@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 7,
-		"patient_name": "George",
-		"sex": "female",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "High Risk",
-		"intensity": "90.00",
-		"email": "george@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 8,
-		"patient_name": "Paul",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "Low Risk",
-		"intensity": "5.00",
-		"email": "paul@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 9,
-		"patient_name": "Judas",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "High Risk",
-		"intensity": "88.33",
-		"email": "judas@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 10,
-		"patient_name": "Ringo",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "High Risk",
-		"intensity": "61.33",
-		"email": "ringoStarr@gmail.com",
-		"date": "28-5-2020"
-	},
-	{
-		"id": 11,
-		"patient_name": "Ringo",
-		"sex": "male",
-		"age": 65,
-		"disease": "Covid-19 Disease",
-		"conclusion": "High Risk",
-		"intensity": "61.33",
-		"email": "ringoStarr@gmail.com",
-		"date": "28-5-2020"
+		"intensity": "30.00",
+		"email": "namledz707@gmail.com",
+		"date": "12-6-2020",
+		"set": {
+			"positive": 30,
+			"neutral": 30,
+			"negative": 30,
+			"refused": 10
+		}
 	}
 ]

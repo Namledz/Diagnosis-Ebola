@@ -633,7 +633,9 @@ myApp.controller('HomePageController', [
 						return docterPredictionsName[element];
 					})
 					$scope.alarmingSymptoms = alarmingSymptoms;
-					console.log($scope.alarmingSymptoms)
+
+					$scope.formFields.set = result.set
+					console.log(result)
 
 					$('body').removeClass('blur-loading')
 					$("#resultModal-covid-19").modal()
@@ -656,7 +658,8 @@ myApp.controller('HomePageController', [
 				intensity: $scope.results.intensity ? $scope.results.intensity : '',
 				conclusion: $scope.results.conclusion ? $scope.results.conclusion : '',
 				sex: $scope.formFields.sex ? $scope.formFields.sex : '',
-				age: $scope.formFields.age ? $scope.formFields.age : ''
+				age: $scope.formFields.age ? $scope.formFields.age : '',
+				set: $scope.formFields.set ? $scope.formFields.set : {}
 			}
 
 			$http.post('/addPatientInfo', data)

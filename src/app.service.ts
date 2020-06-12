@@ -168,6 +168,7 @@ export class AppService {
 		let email = data.email ? data.email : ''
 		let age = data.age ? data.age : ''
 		let sex = data.sex ? data.sex : ''
+		let set = data.set ? data.set : {}
 
 		// 	{
 		// 	"id": 1000,
@@ -191,9 +192,10 @@ export class AppService {
 			intensity: intensity,
 			email: email,
 			date: date,
+			set: set
 
 		})
-		console.log(conclusion)
+		console.log(arr)
 		let newData = JSON.stringify(arr);
 		fs.writeFileSync(`${data_path}patient_data.json`, newData, options);
 		return {}
@@ -204,6 +206,7 @@ export class AppService {
 		let file = fs.readFileSync(`${data_path}patient_data.json`, { encoding: "utf8" })
 		let arr = JSON.parse(file);
 		let data = arr.map((patient) => {
+			let action = `<button type="button" onclick="viewDetailPatient(${patient.id})" class="btn btn-view-patient  view-patient-detail">View</button>`
 			return {
 				patient_id: patient.id,
 				patient_name: patient.patient_name,
@@ -213,7 +216,8 @@ export class AppService {
 				conclusion: patient.conclusion,
 				intensity: `${patient.intensity}%`,
 				email: patient.email,
-				date: patient.date
+				date: patient.date,
+				action: action
 			}
 		})
 		return {
@@ -240,6 +244,16 @@ export class AppService {
 			]
 		}
 		return data
+	}
+
+	getPatientDetail(id): object {
+		let file = fs.readFileSync(`${data_path}patient_data.json`, { encoding: "utf8" })
+		let arr = JSON.parse(file);
+		let data = arr.filter(patient => {
+			return patient.id == id
+		})	
+
+		return data[0]
 	}
 
 	getNonZeroMinmumValue(array: Array<number>): number {

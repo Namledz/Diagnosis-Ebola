@@ -33,16 +33,42 @@
 						<th column="intensity">Intensity</th>
 						<th column="intensity">Patient Email</th>
 						<th column="date">Diagnosis Date</th>
+						<th column="action">Action</th>
 					</tr>
 				</thead>
 				<tbody>
 				</tbody>
 			</table>
-			<!-- /.row -->
-			<!-- Main row -->
-			<div class="row">
+
+			<div id="patient-detail" style="display: none;">
+				<div style="margin: 0px 70px 0px 50px;">
+					<h4 style="margin-bottom: 20px;">PATIENT ID: {{patient.id}}</h4>
+					<div class="row">
+						<div class="col-md-3" style="font-size: 20px;">
+							<div class="mb-10">Name: {{ patient.patient_name }}</div>
+							<div class="mb-10">Age: {{ patient.age }}</div>
+							<div class="mb-10">Sex: {{ patient.sex }}</div>
+							<div class="mb-10">Email: {{ patient.email }}</div>
+							<div class="mb-10">Conclusion: {{ patient.conclusion }}</div>
+							<div class="mb-10">Day diagnosis: {{ patient.date }}</div>
+							<div class="mb-10">Disease Diagnosis: {{ patient.disease }}</div>
+						</div>
+						<div class="col-md-3" style="font-size: 20px;">
+							<!-- <h4 class="mb-10">Docter Diagnosis</h4> -->
+							<div class="mb-10">Positive: {{ patient.set.positive }}%</div>
+							<div class="mb-10">Neutral: {{ patient.set.neutral }}%</div>
+							<div class="mb-10">Negative: {{ patient.set.negative }}%</div>
+							<div class="mb-10">Refused: {{ patient.set.refused }}%</div>
+							<div class="mb-10">Intensity: {{ patient.intensity }}%</div>
+						</div>
+						<div class="col-md-6">
+							<canvas id="patient-chart" width="200" height="200"></canvas>
+						</div>
+					</div>
+				</div>
+
 			</div>
-			<!-- /.row (main row) -->
+
 		</div><!-- /.container-fluid -->
 	</section>
 	<!-- /.content -->

@@ -49,7 +49,8 @@ export class AppController {
 			date: newDate,
 			email: body.email,
 			age: body.age,
-			sex: body.sex
+			sex: body.sex,
+			set: body.set
 		}
 		return this.appService.addPatientInfo(data)
 	}
@@ -57,6 +58,13 @@ export class AppController {
 	@Post('/admin/getListpatient')
 	getListpatient(@Req() request: Request ) {
 		return this.appService.getListPatient()
+	}
+
+	@Post('/admin/get-detail-patient')
+	getPatientDetail(@Req() request: Request ) {
+		let body = request.body;
+		let patientId = body.patientId
+		return this.appService.getPatientDetail(patientId)
 	}
 
 	@Get('/get-docter-diagnosis')

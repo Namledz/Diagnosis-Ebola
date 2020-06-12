@@ -21,7 +21,7 @@
 		<div class="container-fluid">
 			<!-- Small boxes (Stat box) -->
 			<table datatable="" id="tbl-patient-lists" width="100%"
-				class="table table-striped table-bordered table-color table-hover tbl-table-list">
+				class="table table-striped table-bordered table-color table-hover tbl-table-list" style="font-size: 14px;">
 				<thead>
 					<tr>
 						<th column="patient_id">Patient ID</th>
@@ -44,7 +44,7 @@
 				<div style="margin: 0px 70px 0px 50px;">
 					<h4 style="margin-bottom: 20px;">PATIENT ID: {{patient.id}}</h4>
 					<div class="row">
-						<div class="col-md-3" style="font-size: 20px;">
+						<div class="col-md-3" style="font-size: 19px;">
 							<div class="mb-10">Name: {{ patient.patient_name }}</div>
 							<div class="mb-10">Age: {{ patient.age }}</div>
 							<div class="mb-10">Sex: {{ patient.sex }}</div>
@@ -53,7 +53,7 @@
 							<div class="mb-10">Day diagnosis: {{ patient.date }}</div>
 							<div class="mb-10">Disease Diagnosis: {{ patient.disease }}</div>
 						</div>
-						<div class="col-md-3" style="font-size: 20px;">
+						<div class="col-md-3" style="font-size: 19px;">
 							<!-- <h4 class="mb-10">Docter Diagnosis</h4> -->
 							<div class="mb-10">Positive: {{ patient.set.positive }}%</div>
 							<div class="mb-10">Neutral: {{ patient.set.neutral }}%</div>

@@ -1,0 +1,19 @@
+[
+	{
+		"id": 2,
+		"patient_name": "Nam",
+		"sex": "male",
+		"age": 65,
+		"disease": "Covid-19 Disease",
+		"conclusion": "Low Risk",
+		"intensity": "30.00",
+		"email": "namledz707@gmail.com",
+		"date": "12-6-2020",
+		"set": {
+			"positive": 30,
+			"neutral": 30,
+			"negative": 30,
+			"refused": 10
+		}
+	}
+]

@@ -1,6 +1,6 @@
 <div class="modal fade" id="resultModal-{{selectedDisease}}" tabindex="-1" role="dialog"
 	aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
+	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 style="float: left;" class="modal-title" id="exampleModalLabel">Your Result</h4>
@@ -11,7 +11,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-md-4">
-						<svg viewBox="0 0 36 36" class="circular-chart" ng-class="getResultCovidClass()">
+						<svg viewBox="0 0 60 60" class="circular-chart" ng-class="getResultCovidClass()">
 							<path class="circle-bg" d="M18 2.0845
 				          a 15.9155 15.9155 0 0 1 0 31.831
 				          a 15.9155 15.9155 0 0 1 0 -31.831" />
@@ -25,11 +25,31 @@
 						<h3>{{results.title}}</h3>
 						<p>{{results.message}}</p>
 						<p>Your Covid-19 intensity was: {{results.intensity}}%</p>
-						<p ng-if="alarmingSymptoms.length > 0" style="font-weight: bold; color: #913a3e; margin-top: 30px; font-size: 17px;">Alarming Symptoms:</p>
+						<p ng-if="alarmingSymptoms.length > 0"
+							style="font-weight: bold; color: #913a3e; margin-top: 30px; font-size: 17px;">Alarming
+							Symptoms:</p>
 						<ul ng-if="alarmingSymptoms.length > 0" style="list-style: inherit; margin-bottom: 20px">
 							<li ng-repeat="symptom in alarmingSymptoms">{{symptom}}</li>
 						</ul>
 					</div>
+				</div>
+				<div style="margin-top: 30px; margin-left: 30px">
+					<table>
+						<thead>
+						  <th style="padding-left:  12px;">Hospital</th>
+						  <th style="padding-left:  12px;">S*</th>
+						  <th style="padding-left:  12px;">S-</th>
+						  <th style="padding-left:  12px;">C</th>
+						  <th style="padding-left:  12px;">Rank</th>
+						</thead>
+						<tr ng-repeat="hospital in dssForm.list">
+							<td>{{ hospital.name }}</td>
+							<td>{{ roundNumber(hospital.goodIdeal) }}</td>
+							<td>{{ roundNumber(hospital.badIdeal) }}</td>
+							<td>{{ roundNumber(hospital.sameGoodIdeal) }}</td>
+							<td>{{ $index + 1 }}</td>
+						</tr>
+					</table>
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -197,7 +217,8 @@
 										class="control control-plus"></button>
 								</form>
 								<p style="padding-top: 30px; font-size: 18px;">Your Ethanol Level is:
-									<b>{{ formFields.ethanol }} mg/dl</b></p>
+									<b>{{ formFields.ethanol }} mg/dl</b>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -220,7 +241,8 @@
 										class="control control-plus"></button>
 								</form>
 								<p style="padding-top: 30px; font-size: 18px;">Your body tempature is:
-									<b>{{ formFields.bodyTemperature }} °F</b></p>
+									<b>{{ formFields.bodyTemperature }} °F</b>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -243,7 +265,8 @@
 										class="control control-plus"></button>
 								</form>
 								<p style="padding-top: 30px; font-size: 18px;">The Atmospheric Temperature is:
-									<b>{{ formFields.atmosphericTemperature }} °C</b></p>
+									<b>{{ formFields.atmosphericTemperature }} °C</b>
+								</p>
 							</div>
 						</div>
 					</div>
@@ -1327,14 +1350,15 @@
 
 				<div ng-show="showScreenSection('Docter-Diagnosis')" id="docter-diagnosis">
 					<div class="screen-container fade" ng-show="showScreenSection('Docter-Diagnosis')">
-						<div class="screen screen-overview-input" style="height: 630px;" >
+						<div class="screen screen-overview-input" style="height: 630px;">
 							<div class="screen-content">
 								<div class="screen-text-header">
 									<h3>Docters Diagnosis</h3>
 								</div>
 								<div class="form-group form-inline number-docter" id="numberOfDoctors">
 									<label>Number of Docters participate in diagnosis:</label>
-									<input type="number" style="float: left;"  min="0" class="form-control" ng-model="docterDiagnosis.numberOfDoctors">
+									<input type="number" style="float: left;" min="0" class="form-control"
+										ng-model="docterDiagnosis.numberOfDoctors">
 								</div>
 								<div style="clear: both;"></div>
 								<table class="table">
@@ -1347,11 +1371,15 @@
 										</tr>
 									</thead>
 									<tbody>
-										<tr ng-repeat="predict in docterDiagnosis.predictions" id="docter_prediction_{{predict.id}}">
+										<tr ng-repeat="predict in docterDiagnosis.predictions"
+											id="docter_prediction_{{predict.id}}">
 											<th scope="row" style="vertical-align: middle;">{{ predict.name }}</th>
-											<td><input type="number" class="form-control" ng-model="predict.prediction.positive"></td>
-											<td><input type="number" class="form-control" ng-model="predict.prediction.neutral"></td>
-											<td><input type="number" class="form-control" ng-model="predict.prediction.negative"></td>
+											<td><input type="number" class="form-control"
+													ng-model="predict.prediction.positive"></td>
+											<td><input type="number" class="form-control"
+													ng-model="predict.prediction.neutral"></td>
+											<td><input type="number" class="form-control"
+													ng-model="predict.prediction.negative"></td>
 										</tr>
 									</tbody>
 								</table>
@@ -1360,6 +1388,28 @@
 					</div>
 				</div>
 
+
+				<!-- District part -->
+				<div ng-show="showScreenSection('District-Selection')">
+					<div class="screen-container fade" ng-show="showScreenSection('District-Selection')">
+						<div class="screen screen-symptoms-input" style="height: 400px;">
+							<div class="screen-content">
+								<div class="screen-text-header">
+									<h3>Select your district</h3>
+								</div>
+								<div>
+									<span style="margin-right: 20px; font-weight: 520;">Your district: </span>
+									<select ng-model="dssForm.district_id" style="width: 400px; height: 43px; border:1px solid lightgray; border-radius: 5px;">
+										<option hidden value="">Select Your District</option>
+										<option ng-repeat="district in listDistricts" ng-value="district.id">
+											{{district.district_name}} District
+										</option>
+									</select>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 
 				<!-- Over view -->
 

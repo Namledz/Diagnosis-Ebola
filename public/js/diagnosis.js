@@ -45,6 +45,11 @@ myApp.controller('HomePageController', [
 			}
 		}
 
+		$scope.dssForm = {
+			district_id: null,
+			list: []
+		}
+
 
 		$scope.blockIsActivated = $scope.sectionBlock[0]
 
@@ -122,6 +127,8 @@ myApp.controller('HomePageController', [
 		$scope.isScreenAnswered = (screen) => {
 			let form = $scope.formFields
 			let data = { status: '', message: '', type: 'error' }
+			// data.status = 'Finished'
+			// return data;
 			switch (screen.title) {
 				case 'Sex':
 					if (form.sex == '' || form.sex == null) {
@@ -194,6 +201,8 @@ myApp.controller('HomePageController', [
 					}
 
 					break;
+
+				
 				case 'Overview':
 					if (form.patientInfo.name == '' || form.patientInfo.email == '') {
 						data.status = 'Not Finish'
@@ -218,7 +227,7 @@ myApp.controller('HomePageController', [
 			$scope.selectedDisease = name
 			let selectedDisease = (name == 'covid-19') ? 'covid-19' : 'ebola';
 
-			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'Age', 'Symptoms', 'Ethanol', 'Body-Tempature', 'Atmospheric-Temperature', 'Regions', 'Docter-Diagnosis', 'Overview']
+			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'District-Selection', 'Age', 'Symptoms', 'Ethanol', 'Body-Tempature', 'Atmospheric-Temperature', 'Regions', 'Docter-Diagnosis', 'Overview']
 			else $scope.screenBlock = ['Sex', 'Age', 'Living Area', 'Symptoms', 'Regions', 'Overview']
 
 			let url = `/get-${selectedDisease}-symptoms`
@@ -541,7 +550,7 @@ myApp.controller('HomePageController', [
 					}
 					$scope.results.intensity = result.intensity;
 					$('body').removeClass('blur-loading')
-					$("#resultModal-ebola").modal()
+					$("#resultModal-ebola").modal({backdrop: 'static', keyboard: false})
 					
 					$timeout($scope.addPatientInfo(), 500)
 				})
@@ -553,6 +562,7 @@ myApp.controller('HomePageController', [
 
 		$scope.getResultCovidClass = () => {
 			if ($scope.results.conclusion == 'Low Risk') return 'green'
+			if ($scope.results.conclusion == 'Medium Risk') return 'orange'
 			if ($scope.results.conclusion == 'High Risk') return 'danger'
 		}
 
@@ -588,10 +598,15 @@ myApp.controller('HomePageController', [
 			// let url = "https://disease-diagnosis.herokuapp.com/covid-diagnosis"
 			let url = "http://disease-diagnosis.herokuapp.com/degreeset"
 
+			let result;
+
 			$('body').addClass('blur-loading')
 			$http.post(url, data)
 				.then(res => {
-					let result = res.data;
+					result = res.data;
+					return $scope.getTopsisHospital(result.intensity)
+				})
+				.then(res => {
 
 					// if (result.level == "LESS SEVERE") {
 					// 	$scope.results.conclusion = 'Low Risk'
@@ -609,15 +624,20 @@ myApp.controller('HomePageController', [
 					// 	$scope.results.message = "The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
 					// }
 
-					if (result.conclusion) {
-						$scope.results.conclusion = 'High Risk'
-						$scope.results.title = 'High Risk'
-						$scope.results.message = "Call an ambulance. The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
-					} else {
+					if(result.intensity > 0 && result.intensity < 30){
 						$scope.results.conclusion = 'Low Risk'
 						$scope.results.title = 'Low Risk'
 						$scope.results.message = 'You are handsome and OK!'
+					} else if(result.intensity >= 30 && result.intensity < 60) {
+						$scope.results.conclusion = 'Medium Risk'
+						$scope.results.title = 'See a doctor immediately'
+						$scope.results.message = 'The symptoms are serious. Seek immediate medical attention if you have serious symptoms. Always call before visiting your doctor or health facility.'
+					} else if(result.intensity >=60 && result.intensity <= 100){
+						$scope.results.conclusion = 'High Risk'
+						$scope.results.title = 'High Risk'
+						$scope.results.message = "Call an ambulance. The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
 					}
+
 
 					console.log(result.intensity)
 					$scope.results.intensity = parseFloat(result.intensity).toFixed(2);
@@ -638,11 +658,12 @@ myApp.controller('HomePageController', [
 					console.log(result)
 
 					$('body').removeClass('blur-loading')
-					$("#resultModal-covid-19").modal()
+					$("#resultModal-covid-19").modal({backdrop: 'static', keyboard: false})
 					$timeout($scope.addPatientInfo(), 500)
 				})
 				.catch(err => {
 					toastr['error']('Unknown Error', "Covid-19 Diagnosis")
+					console.log(err);
 					$('body').removeClass('blur-loading')
 				})
 
@@ -684,6 +705,10 @@ myApp.controller('HomePageController', [
 				.catch(err => {
 					console.log(err)
 				})
+		}
+
+		$scope.roundNumber = (num) => {
+			return (Math.round(num * 10000000) / 10000000).toFixed(7);
 		}
 
 		// Clear data
@@ -732,11 +757,55 @@ myApp.controller('HomePageController', [
 				})
 		}
 
+		$scope.getTopsisHospital = (rate) => {
+			let district_id = $scope.dssForm.district_id;
+			let data = {
+				"district_id": district_id,
+				"rate": rate
+			}
+			let url = '/get-topsis-hospital'
+			$http.post(url, data).then(res => {
+				let result = res.data;
+				$scope.dssForm.list = result;
+			}).catch(error => { throw error });
+		}
+
 		$scope.checkCovidRangeSymptoms = (id) => {
 			let range = ['CH', 'CD', 'BS']
 			if (range.indexOf(id) != -1) return false;
 			else return true;
 		}
+		
+		$scope.listDistricts = [
+			{
+				"id": 1,
+				"district_name": "Hai Bà Trưng"
+			},
+			{
+				"id": 2,
+				"district_name": "Hoàn Kiếm"
+			},
+			{
+				"id": 3,
+				"district_name": "Đống Đa"
+			},
+			{
+				"id": 4,
+				"district_name": "Hoàng Mai"
+			},
+			{
+				"id": 5,
+				"district_name": "Cầu Giấy"
+			},
+			{
+				"id": 6,
+				"district_name": "Ba Đình"
+			},
+			{
+				"id": 7,
+				"district_name": "Hà Đông"
+			}
+		]
 	}
 
 ])

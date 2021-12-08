@@ -71,4 +71,12 @@ export class AppController {
 	getDocterDiagnosis() {
 		return this.appService.getDoctersDiagnosis()
 	}
+
+	@Post('/get-topsis-hospital')
+	getTopsisHospital(@Req() request: Request ) {
+		let body = request.body;
+		let district_id = body.district_id
+		let rate = body.rate
+		return this.appService.getTopsisHospital(district_id, rate)
+	}
 }

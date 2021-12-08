@@ -6,6 +6,11 @@
     	position: relative;
     }
 
+
+    .modal-xl {
+        width: 1140px;
+    }
+
     ol, ul {
     	list-style: none;
     }

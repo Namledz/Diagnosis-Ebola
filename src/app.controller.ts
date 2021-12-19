@@ -1,5 +1,6 @@
 import { Controller, Get, Post, Body, Res, Req, Param, Render } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CovidService } from './covid.service';
 import { Response, response } from 'express';
 import { Request } from 'express';
 import { request } from 'http';
@@ -7,7 +8,7 @@ const data = require("../data/data.json");
 
 @Controller()	
 export class AppController {
-	constructor(private readonly appService: AppService) { }
+	constructor(private readonly appService: AppService, private readonly covidService: CovidService) { }
 
 	@Get('/')
 	@Render('index.ejs')
@@ -72,11 +73,20 @@ export class AppController {
 		return this.appService.getDoctersDiagnosis()
 	}
 
-	@Post('/get-topsis-hospital')
-	getTopsisHospital(@Req() request: Request ) {
-		let body = request.body;
-		let district_id = body.district_id
-		let rate = body.rate
-		return this.appService.getTopsisHospital(district_id, rate)
+
+	@Post('/submit-covid')
+	submitCovid(@Req() request: Request) {
+		let body = request.body
+		let data = body.factors;
+		console.log(data);
+		return this.covidService.submitCovid(data);
 	}
+
+	// @Post('/get-topsis-hospital')
+	// getTopsisHospital(@Req() request: Request ) {
+	// 	let body = request.body;
+	// 	let district_id = body.district_id
+	// 	let rate = body.rate
+	// 	return this.appService.getTopsisHospital(district_id, rate)
+	// }
 }

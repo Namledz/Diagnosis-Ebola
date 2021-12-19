@@ -1,4 +1,4 @@
-var myApp = angular.module('MyApp', ['ngAnimate']);
+var myApp = angular.module('MyApp', ['ngAnimate', 'ngSanitize']);
 
 myApp.controller('HomePageController', [
 	'$scope',
@@ -227,7 +227,7 @@ myApp.controller('HomePageController', [
 			$scope.selectedDisease = name
 			let selectedDisease = (name == 'covid-19') ? 'covid-19' : 'ebola';
 
-			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'District-Selection', 'Age', 'Symptoms', 'Ethanol', 'Body-Tempature', 'Atmospheric-Temperature', 'Regions', 'Docter-Diagnosis', 'Overview']
+			if (name == 'covid-19') $scope.screenBlock = ['Sex', 'District-Selection', 'Age', 'Symptoms', 'Ethanol', 'Body-Tempature', 'Atmospheric-Temperature', 'SpO2-Level', 'Repository-Rate', 'PaO2-FiO2', 'Regions', 'Overview']
 			else $scope.screenBlock = ['Sex', 'Age', 'Living Area', 'Symptoms', 'Regions', 'Overview']
 
 			let url = `/get-${selectedDisease}-symptoms`
@@ -256,6 +256,10 @@ myApp.controller('HomePageController', [
 			$scope.setUpEthanolTooltip();
 			$scope.setUpBodyTempatureTooltip();
 			$scope.setUpAtmosphericTemperatureTooltip();
+			$scope.setUpSPO2Tooltip();
+			$scope.setUpPaO2FiO2Tooltip();
+			$scope.setUpAtmosphericTemperatureTooltip();
+			$scope.setUpReperitoryRateTooltip();
 		}
 
 		//  Sex
@@ -271,16 +275,16 @@ myApp.controller('HomePageController', [
 
 		$scope.setUpAgeTooltip = () => {
 			let sliderToolTip = (event, ui) => {
-				var curAge = ui.value || 65
+				var curAge = ui.value || 40
 				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curAge + '</div></div>';
 				$(`#age-range-${$scope.selectedDisease} .ui-slider-handle`).html(tooltip);
-				$scope.formFields.age = ui.value || 65
+				$scope.formFields.age = ui.value || 40
 			}
 			$(`#age-range-${$scope.selectedDisease}`).slider({
 				range: "max",
 				min: 1, // Change this to change the min value
-				max: 130, // Change this to change the max value
-				value: 65, // Change this to change the display value
+				max: 80, // Change this to change the max value
+				value: 40, // Change this to change the display value
 				step: 1, // Change this to change the increment by value.
 				create: sliderToolTip,
 				slide: sliderToolTip
@@ -324,26 +328,80 @@ myApp.controller('HomePageController', [
 
 		$scope.setUpBodyTempatureTooltip = () => {
 			let sliderToolTip = (event, ui) => {
-				var curValue = ui.value || 100
+				var curValue = ui.value || 36.5
 				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
 				$(`#body-tempature-range-covid-19 .ui-slider-handle`).html(tooltip);
-				$scope.formFields.bodyTemperature = ui.value || 100
+				$scope.formFields.bodyTemperature = ui.value || 36.5
 				angular.element('#button-body-tempature-range-covid-19').triggerHandler('click')
 			}
 			$(`#body-tempature-range-covid-19`).slider({
 				range: "max",
-				min: 95, // Change this to change the min value
-				max: 105, // Change this to change the max value
-				value: 100, // Change this to change the display value
+				min: 33, // Change this to change the min value
+				max: 45, // Change this to change the max value
+				value: 36.5, // Change this to change the display value
+				step: 0.1, // Change this to change the increment by value.
+				create: sliderToolTip,
+				slide: sliderToolTip
+			});
+		}
+
+		$scope.setUpSPO2Tooltip = () => {
+			let sliderToolTip = (event, ui) => {
+				var curValue = ui.value || 98
+				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
+				$(`#spo2-level-range-covid-19 .ui-slider-handle`).html(tooltip);
+				$scope.formFields.spo2_level = ui.value || 98
+				angular.element('#button-body-spo2-level-range-covid-19').triggerHandler('click')
+			}
+			$(`#spo2-level-range-covid-19`).slider({
+				range: "max",
+				min: 90, // Change this to change the min value
+				max: 100, // Change this to change the max value
+				value: 98, // Change this to change the display value
+				step: 1, // Change this to change the increment by value.
+				create: sliderToolTip,
+				slide: sliderToolTip
+			});
+		}
+		$scope.setUpReperitoryRateTooltip = () => {
+			
+			let sliderToolTip = (event, ui) => {
+				var curValue = ui.value || 14
+				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
+				$(`#repiratory_rate-range-covid-19 .ui-slider-handle`).html(tooltip);
+				$scope.formFields.repiratory_rate = ui.value || 14
+				angular.element('#button-body-repiratory_rate-range-covid-19').triggerHandler('click')
+			}
+			$(`#repiratory_rate-range-covid-19`).slider({
+				range: "max",
+				min: 9, // Change this to change the min value
+				max: 40, // Change this to change the max value
+				value: 14, // Change this to change the display value
 				step: 1, // Change this to change the increment by value.
 				create: sliderToolTip,
 				slide: sliderToolTip
 			});
 		}
 
-		$scope.testClick = () => {
-			console.log(123123123)
+		$scope.setUpPaO2FiO2Tooltip = () => {
+			let sliderToolTip = (event, ui) => {
+				var curValue = ui.value || 429
+				var tooltip = '<div class="tooltip tooltip-main top in"><div class="tooltip-arrow"></div><div class="tooltip-inner">' + curValue + '</div></div>';
+				$(`#pao2-level-range-covid-19 .ui-slider-handle`).html(tooltip);
+				$scope.formFields.pao2_fio2 = ui.value || 429
+				angular.element('#button-body-pao2-level-range-covid-19').triggerHandler('click')
+			}
+			$(`#pao2-level-range-covid-19`).slider({
+				range: "max",
+				min: 130, // Change this to change the min value
+				max: 490, // Change this to change the max value
+				value: 429, // Change this to change the display value
+				step: 1, // Change this to change the increment by value.
+				create: sliderToolTip,
+				slide: sliderToolTip
+			});
 		}
+
 
 		// Atmospheric Temperature
 		$scope.setUpAtmosphericTemperatureTooltip = () => {
@@ -576,27 +634,38 @@ myApp.controller('HomePageController', [
 				docterPredictionsName[predict.id] = predict.name;
 			})
 
-			let predictions = {
-				"numberOfDoctors": docterDiagnosis.numberOfDoctors,
-				"predictions": docterPredictions
-			}
+			// let predictions = {
+			// 	"numberOfDoctors": docterDiagnosis.numberOfDoctors,
+			// 	"predictions": docterPredictions
+			// }
 
 			let factors = {
-				"atmosphericTemperature": $scope.formFields.atmosphericTemperature,
-				"bodyTemperature": $scope.formFields.bodyTemperature,
+				"atmospheric_temperature": $scope.formFields.atmosphericTemperature,
+				"body_temperature": $scope.formFields.bodyTemperature,
 				"ethanol": $scope.formFields.ethanol,
+				"spo2_level": $scope.formFields.spo2_level,
+				"pao2_fio2": $scope.formFields.pao2_fio2,
+				"repiratory_rate": $scope.formFields.repiratory_rate,
 				"cold": parseInt($scope.formFields.symptoms[1].linguistic),
 				"cough": parseInt($scope.formFields.symptoms[2].linguistic),
-				"breathShortness": parseInt($scope.formFields.symptoms[0].linguistic)
+				"dyspnea":  parseInt($scope.formFields.symptoms[3].linguistic),
+				"abnormal_chest_imaging": parseInt($scope.formFields.symptoms[4].linguistic),
+				"headache": parseInt($scope.formFields.symptoms[5].linguistic),
+				"nausea": parseInt($scope.formFields.symptoms[6].linguistic),
+				"vomiting": parseInt($scope.formFields.symptoms[7].linguistic),
+				"loss_of_taste_and_smell": parseInt($scope.formFields.symptoms[8].linguistic),
+				"respiratory_failure": parseInt($scope.formFields.symptoms[9].linguistic),
+				"multiple_organ_dysfunction": parseInt($scope.formFields.symptoms[10].linguistic),
+				"breath_shortness": parseInt($scope.formFields.symptoms[0].linguistic)
 			}
 
 			let data = {
-				"factors": factors,
-				"predictions": predictions
+				"factors": factors
 			}
 
 			// let url = "https://disease-diagnosis.herokuapp.com/covid-diagnosis"
-			let url = "http://disease-diagnosis.herokuapp.com/degreeset"
+			// let url = "http://disease-diagnosis.herokuapp.com/degreeset"
+			let url = '/submit-covid'
 
 			let result;
 
@@ -604,7 +673,7 @@ myApp.controller('HomePageController', [
 			$http.post(url, data)
 				.then(res => {
 					result = res.data;
-					return $scope.getTopsisHospital(result.intensity)
+					return result;
 				})
 				.then(res => {
 
@@ -624,42 +693,48 @@ myApp.controller('HomePageController', [
 					// 	$scope.results.message = "The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
 					// }
 
-					if(result.intensity > 0 && result.intensity < 30){
-						$scope.results.conclusion = 'Low Risk'
-						$scope.results.title = 'Low Risk'
-						$scope.results.message = 'You are handsome and OK!'
-					} else if(result.intensity >= 30 && result.intensity < 60) {
-						$scope.results.conclusion = 'Medium Risk'
-						$scope.results.title = 'See a doctor immediately'
-						$scope.results.message = 'The symptoms are serious. Seek immediate medical attention if you have serious symptoms. Always call before visiting your doctor or health facility.'
-					} else if(result.intensity >=60 && result.intensity <= 100){
-						$scope.results.conclusion = 'High Risk'
-						$scope.results.title = 'High Risk'
-						$scope.results.message = "Call an ambulance. The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
-					}
+					// if(result.intensity > 0 && result.intensity < 30){
+					// 	$scope.results.conclusion = 'Low Risk'
+					// 	$scope.results.title = 'Low Risk'
+					// 	$scope.results.message = 'You are handsome and OK!'
+					// } else if(result.intensity >= 30 && result.intensity < 60) {
+					// 	$scope.results.conclusion = 'Medium Risk'
+					// 	$scope.results.title = 'See a doctor immediately'
+					// 	$scope.results.message = 'The symptoms are serious. Seek immediate medical attention if you have serious symptoms. Always call before visiting your doctor or health facility.'
+					// } else if(result.intensity >=60 && result.intensity <= 100){
+					// 	$scope.results.conclusion = 'High Risk'
+					// 	$scope.results.title = 'High Risk'
+					// 	$scope.results.message = "Call an ambulance. The symptoms are very serious. Call 113 or call ahead to your local emergency facility: Notify the operator that you are seeking care for someone who has or may have COVID-19."
+					// }
 
 
-					console.log(result.intensity)
-					$scope.results.intensity = parseFloat(result.intensity).toFixed(2);
+					// console.log(result.intensity)
+					// $scope.results.intensity = parseFloat(result.intensity).toFixed(2);
 					
-					console.log(result.description)
-					let uniqSymptoms = []
-					result.description.forEach(element => {
-						if (uniqSymptoms.indexOf(element) == -1) {
-							uniqSymptoms.push(element)
-						}
-					})
-					let alarmingSymptoms = uniqSymptoms.map((element) => {
-						return docterPredictionsName[element];
-					})
-					$scope.alarmingSymptoms = alarmingSymptoms;
+					// console.log(result.description)
+					// let uniqSymptoms = []
+					// result.description.forEach(element => {
+					// 	if (uniqSymptoms.indexOf(element) == -1) {
+					// 		uniqSymptoms.push(element)
+					// 	}
+					// })
+					// let alarmingSymptoms = uniqSymptoms.map((element) => {
+					// 	return docterPredictionsName[element];
+					// })
+					// $scope.alarmingSymptoms = alarmingSymptoms;
 
-					$scope.formFields.set = result.set
+					// $scope.formFields.set = result.set
 					console.log(result)
+
+					
+					$scope.results.title = result.data.title;
+					$scope.results.treatments = result.treatments
+					$scope.results.statuses = result.list;
+
 
 					$('body').removeClass('blur-loading')
 					$("#resultModal-covid-19").modal({backdrop: 'static', keyboard: false})
-					$timeout($scope.addPatientInfo(), 500)
+					// $timeout($scope.addPatientInfo(), 500)
 				})
 				.catch(err => {
 					toastr['error']('Unknown Error', "Covid-19 Diagnosis")
@@ -771,10 +846,12 @@ myApp.controller('HomePageController', [
 		}
 
 		$scope.checkCovidRangeSymptoms = (id) => {
-			let range = ['CH', 'CD', 'BS']
+			let range = ['CH', 'CD', 'BS', 'DY', 'AC', 'HE', 'NE', 'VG', 'LTS', 'RF', 'MOD']
 			if (range.indexOf(id) != -1) return false;
 			else return true;
 		}
+
+		$scope.highlight_treatsment = []
 		
 		$scope.listDistricts = [
 			{

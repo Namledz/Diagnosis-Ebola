@@ -25,6 +25,7 @@
     "@nestjs/core": "^7.0.0",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/platform-fastify": "7.0.8",
+    "bower": "^1.8.13",
     "chart.js": "^2.9.3",
     "cors": "^2.8.5",
     "ejs": "^3.0.2",
